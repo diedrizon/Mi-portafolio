@@ -61,7 +61,7 @@ const Navbar = () => {
           </li>
         ))}
       </ul>
-      <a href="/CV.pdf" download className="navbar__cv" data-cursor>
+      <a href="/CV-Diedrizon.pdf" download className="navbar__cv" data-cursor>
         CV
       </a>
     </nav>

@@ -423,7 +423,7 @@ function App() {
                 Ver proyectos <FaArrowRight />
               </a>
               <a
-                href="/CV.pdf"
+                href="/CV-Diedrizon.pdf"
                 download
                 className="btn btn--ghost"
                 data-magnetic
@@ -489,7 +489,7 @@ function App() {
                     <li>Reparaciones</li>
                     <li>Farmacia e inventario</li>
                   </ul>
-                  <a href="/CV.pdf" download className="btn btn--primary reveal-child" data-cursor>
+                  <a href="/CV-Diedrizon.pdf" download className="btn btn--primary reveal-child" data-cursor>
                     <FaDownload /> Descargar mi CV
                   </a>
                 </div>
