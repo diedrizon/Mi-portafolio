@@ -2,133 +2,219 @@
 import React, { useEffect, useRef } from 'react';
 import './ParticleBackground.css';
 
+/**
+ * Constelación interactiva multicolor (optimizada).
+ * Mejoras de rendimiento:
+ *  - Glow con sprite pre-renderizado (drawImage) en lugar de shadowBlur por
+ *    partícula, que es muy costoso.
+ *  - Bucle rAF que se pausa cuando la pestaña no está visible.
+ *  - DPR capado y resize con debounce.
+ *  - Conteo de partículas reducido en móvil / reduced-motion.
+ */
 const ParticleBackground = () => {
   const canvasRef = useRef(null);
-  // guarda posición real del ratón
-  const mouse = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
-  // controla el “auto-puntero” de móvil
-  const autoPointer = useRef({
-    x: window.innerWidth / 2,
-    y: window.innerHeight / 2,
-    targetX: Math.random() * window.innerWidth,
-    targetY: Math.random() * window.innerHeight,
-    speed: 1.2,
-  });
+  const mouse = useRef({ x: 0, y: 0 });
+  const autoPointer = useRef({ x: 0, y: 0, tx: 0, ty: 0, speed: 1.4 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     let particles = [];
-    const PARTICLE_COUNT = 100;
-    // variable que indica si estamos en pantallas pequeñas
     let isMobile = window.innerWidth <= 768;
+    let dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    let raf = null;
+    let running = true;
 
-    // redimensiona y reinicia partículas + autoPointer
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      isMobile = window.innerWidth <= 768;
+    const palette = ['#22d3ee', '#3b82f6', '#2dd4bf'];
 
-      particles = Array.from({ length: PARTICLE_COUNT }).map(() => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        pulse: Math.random() * Math.PI * 2,
-      }));
+    // --- sprites de glow pre-renderizados (uno por color) ---
+    const SPRITE = 24;
+    const sprites = {};
+    const buildSprites = () => {
+      palette.forEach((color) => {
+        const s = document.createElement('canvas');
+        s.width = s.height = SPRITE;
+        const sc = s.getContext('2d');
+        const g = sc.createRadialGradient(
+          SPRITE / 2, SPRITE / 2, 0,
+          SPRITE / 2, SPRITE / 2, SPRITE / 2
+        );
+        g.addColorStop(0, color);
+        g.addColorStop(0.35, color + 'cc');
+        g.addColorStop(1, color + '00');
+        sc.fillStyle = g;
+        sc.fillRect(0, 0, SPRITE, SPRITE);
+        sprites[color] = s;
+      });
+    };
+    buildSprites();
 
-      // reinicia autoPointer en mobile
-      autoPointer.current.x = canvas.width / 2;
-      autoPointer.current.y = canvas.height / 2;
-      autoPointer.current.targetX = Math.random() * canvas.width;
-      autoPointer.current.targetY = Math.random() * canvas.height;
+    mouse.current = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    autoPointer.current = {
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+      tx: Math.random() * window.innerWidth,
+      ty: Math.random() * window.innerHeight,
+      speed: 1.4,
     };
 
-    // escucha ratón siempre (necesario para desktop)
-    const handleMouseMove = (e) => {
+    const buildParticles = () => {
+      const count = reduce ? 36 : isMobile ? 50 : 100;
+      particles = Array.from({ length: count }).map(() => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.45,
+        r: Math.random() * 1.6 + 0.8,
+        pulse: Math.random() * Math.PI * 2,
+        color: palette[(Math.random() * palette.length) | 0],
+      }));
+    };
+
+    const applySize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = Math.floor(window.innerWidth * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      isMobile = window.innerWidth <= 768;
+      buildParticles();
+    };
+
+    let resizeTimer;
+    const onResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(applySize, 150);
+    };
+
+    const onMove = (e) => {
       mouse.current.x = e.clientX;
       mouse.current.y = e.clientY;
     };
 
-    window.addEventListener('resize', resizeCanvas);
-    window.addEventListener('mousemove', handleMouseMove);
-    resizeCanvas();
+    applySize();
+
+    const W = () => window.innerWidth;
+    const H = () => window.innerHeight;
 
     const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const w = W();
+      const h = H();
+      ctx.clearRect(0, 0, w, h);
 
-      // 1) dibuja partículas
+      // --- partículas (glow barato con sprite) ---
+      ctx.globalCompositeOperation = 'lighter';
       for (const p of particles) {
         p.x += p.vx;
         p.y += p.vy;
-        p.pulse += 0.1;
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        p.pulse += 0.05;
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
 
-        const glow = (Math.sin(p.pulse) + 1) * 3 + 2;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255,255,255,0.7)';
-        ctx.shadowBlur = glow;
-        ctx.shadowColor = '#00d8ff';
-        ctx.fill();
+        const scale = (Math.sin(p.pulse) * 0.25 + 1) * p.r;
+        const size = SPRITE * scale;
+        ctx.drawImage(sprites[p.color], p.x - size / 2, p.y - size / 2, size, size);
+      }
+      ctx.globalCompositeOperation = 'source-over';
+
+      // --- conexiones entre partículas cercanas ---
+      const linkDist = isMobile ? 95 : 130;
+      const linkDist2 = linkDist * linkDist;
+      ctx.lineWidth = 1;
+      for (let i = 0; i < particles.length; i++) {
+        const a = particles[i];
+        for (let j = i + 1; j < particles.length; j++) {
+          const b = particles[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < linkDist2) {
+            const alpha = (1 - Math.sqrt(d2) / linkDist) * 0.22;
+            ctx.strokeStyle = `rgba(148, 163, 255, ${alpha})`;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
       }
 
-      // 2) calcula posición de la araña
-      let spiderX, spiderY;
-      if (isMobile) {
+      // --- nodo guía (ratón / auto) ---
+      let gx, gy;
+      if (isMobile || reduce) {
         const ap = autoPointer.current;
-        const dx = ap.targetX - ap.x;
-        const dy = ap.targetY - ap.y;
+        const dx = ap.tx - ap.x;
+        const dy = ap.ty - ap.y;
         const dist = Math.hypot(dx, dy);
-
-        // si llega al objetivo, elige uno nuevo
-        if (dist < 10) {
-          ap.targetX = Math.random() * canvas.width;
-          ap.targetY = Math.random() * canvas.height;
+        if (dist < 12) {
+          ap.tx = Math.random() * w;
+          ap.ty = Math.random() * h;
         } else {
           ap.x += (dx / dist) * ap.speed;
           ap.y += (dy / dist) * ap.speed;
         }
-        spiderX = ap.x;
-        spiderY = ap.y;
+        gx = ap.x;
+        gy = ap.y;
       } else {
-        // desktop: sigue al mouse
-        spiderX = mouse.current.x;
-        spiderY = mouse.current.y;
+        gx = mouse.current.x;
+        gy = mouse.current.y;
       }
 
-      // 3) dibuja líneas “enredaderas” hacia las partículas más cercanas
-      particles
-        .sort((a, b) => {
-          const da = (a.x - spiderX) ** 2 + (a.y - spiderY) ** 2;
-          const db = (b.x - spiderX) ** 2 + (b.y - spiderY) ** 2;
-          return da - db;
-        })
-        .slice(0, 8)
-        .forEach((p) => {
-          ctx.beginPath();
-          ctx.moveTo(spiderX, spiderY);
-          ctx.lineTo(p.x, p.y);
-          ctx.strokeStyle = 'rgba(0,216,255,0.3)';
-          ctx.lineWidth = 1;
-          ctx.stroke();
-        });
+      // enlaza las 9 más cercanas al nodo guía sin ordenar todo el array
+      const gd = particles.map((p, idx) => ({
+        idx,
+        d: (p.x - gx) ** 2 + (p.y - gy) ** 2,
+      }));
+      gd.sort((a, b) => a.d - b.d);
+      ctx.strokeStyle = 'rgba(34, 211, 238, 0.35)';
+      ctx.lineWidth = 1.1;
+      for (let k = 0; k < 9 && k < gd.length; k++) {
+        const p = particles[gd[k].idx];
+        ctx.beginPath();
+        ctx.moveTo(gx, gy);
+        ctx.lineTo(p.x, p.y);
+        ctx.stroke();
+      }
 
-      // 4) dibuja un punto que representa la araña
-      ctx.beginPath();
-      ctx.arc(spiderX, spiderY, 4, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(0,216,255,0.9)';
-      ctx.fill();
+      const guide = sprites['#22d3ee'];
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.drawImage(guide, gx - 14, gy - 14, 28, 28);
+      ctx.globalCompositeOperation = 'source-over';
 
-      requestAnimationFrame(draw);
+      raf = requestAnimationFrame(draw);
     };
 
-    draw();
+    const start = () => {
+      if (!running) return;
+      if (raf == null) raf = requestAnimationFrame(draw);
+    };
+    const stop = () => {
+      if (raf != null) {
+        cancelAnimationFrame(raf);
+        raf = null;
+      }
+    };
+
+    const onVisibility = () => {
+      running = !document.hidden;
+      if (running) start();
+      else stop();
+    };
+
+    window.addEventListener('resize', onResize);
+    window.addEventListener('mousemove', onMove, { passive: true });
+    document.addEventListener('visibilitychange', onVisibility);
+    start();
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('mousemove', onMove);
+      document.removeEventListener('visibilitychange', onVisibility);
+      clearTimeout(resizeTimer);
+      stop();
     };
   }, []);
 
