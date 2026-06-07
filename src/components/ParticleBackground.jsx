@@ -27,7 +27,7 @@ const ParticleBackground = () => {
     let raf = null;
     let running = true;
 
-    const palette = ['#22d3ee', '#a855f7', '#818cf8'];
+    const palette = ['#22d3ee', '#3b82f6', '#2dd4bf'];
 
     // --- sprites de glow pre-renderizados (uno por color) ---
     const SPRITE = 24;

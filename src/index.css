@@ -15,18 +15,18 @@
   --text-soft: #c3c9e8;
   --text-dim: #8a91b4;
 
-  /* Acentos (paleta reducida: dúo cyan + violeta) */
+  /* Acentos (paleta fría: cyan + azul + teal, sin morado) */
   --cyan: #22d3ee;
-  --violet: #a855f7;
-  --indigo: #818cf8;
+  --blue: #3b82f6;
+  --teal: #2dd4bf;
 
   /* Gradientes */
-  --grad-main: linear-gradient(120deg, #22d3ee 0%, #a855f7 100%);
-  --grad-soft: linear-gradient(120deg, #22d3ee22, #a855f722);
+  --grad-main: linear-gradient(120deg, #2dd4bf 0%, #22d3ee 48%, #3b82f6 100%);
+  --grad-soft: linear-gradient(120deg, #22d3ee22, #3b82f622);
 
   /* Glow */
   --glow-cyan: 0 0 40px rgba(34, 211, 238, 0.32);
-  --glow-violet: 0 0 40px rgba(168, 85, 247, 0.32);
+  --glow-blue: 0 0 40px rgba(59, 130, 246, 0.34);
 
   /* Tipografía */
   --font-display: 'Syne', 'Space Grotesk', system-ui, sans-serif;
@@ -65,7 +65,7 @@ body {
 }
 
 ::selection {
-  background: var(--violet);
+  background: var(--blue);
   color: #fff;
 }
 
@@ -76,7 +76,7 @@ body {
   background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(var(--cyan), var(--violet));
+  background: linear-gradient(var(--cyan), var(--blue));
   border-radius: 99px;
 }
 

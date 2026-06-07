@@ -8,8 +8,8 @@ import React from 'react';
 const AuroraBackground = () => (
   <div className="aurora" aria-hidden="true">
     <div className="aurora__blob aurora__blob--cyan" />
-    <div className="aurora__blob aurora__blob--violet" />
-    <div className="aurora__blob aurora__blob--indigo" />
+    <div className="aurora__blob aurora__blob--blue" />
+    <div className="aurora__blob aurora__blob--teal" />
     <div className="aurora__grid" />
     <div className="aurora__noise" />
   </div>

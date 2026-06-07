@@ -23,6 +23,7 @@ import {
   FaGithub,
   FaFacebook,
   FaLinkedin,
+  FaWhatsapp,
   FaArrowDown,
 } from 'react-icons/fa';
 import {
@@ -37,7 +38,6 @@ import {
   SiFigma,
   SiTableau,
   SiExpo,
-  SiTiktok,
 } from 'react-icons/si';
 import { FaJava } from 'react-icons/fa6';
 
@@ -45,13 +45,15 @@ import './App.css';
 
 /* ---------- Datos ---------- */
 
-// TODO: reemplaza estos enlaces por tus perfiles reales.
+const EMAIL = 'diedrinzonfargas@gmail.com';
+const PHONE_DISPLAY = '+505 8825 7506';
+
 const SOCIALS = {
-  email: 'mailto:diedrinzonfargas@gmail.com',
+  email: `mailto:${EMAIL}`,
+  whatsapp: 'https://wa.me/50588257506',
   github: 'https://github.com/diedrizon',
-  linkedin: '#',
-  facebook: '#',
-  tiktok: '#',
+  linkedin: 'https://www.linkedin.com/in/diedrizon-fargas-a65181238',
+  facebook: 'https://www.facebook.com/share/1ax1NVEDe8/',
 };
 
 const ROLES = [
@@ -84,7 +86,7 @@ const PROJECTS = [
     desc: 'Sistema de calificaciones con reporting BI (Pentaho, Power BI, Tableau).',
     icon: <FaSchool />,
     tech: ['Pentaho', 'Power BI', 'Tableau'],
-    accent: '#a855f7',
+    accent: '#3b82f6',
     featured: true,
   },
   {
@@ -93,7 +95,7 @@ const PROJECTS = [
     desc: 'App móvil para gestión de órdenes de reparación.',
     icon: <FaTools />,
     tech: ['React Native', 'Expo', 'Firebase'],
-    accent: '#818cf8',
+    accent: '#2dd4bf',
   },
   {
     name: 'Farmacia Rosales',
@@ -109,7 +111,7 @@ const PROJECTS = [
     desc: 'Control de pedidos y mesas para restaurante.',
     icon: <FaUtensils />,
     tech: ['React Native', 'MySQL'],
-    accent: '#a855f7',
+    accent: '#3b82f6',
   },
   {
     name: 'SIVEN · Backend',
@@ -117,7 +119,7 @@ const PROJECTS = [
     desc: 'API REST con Spring Boot para datos epidemiológicos.',
     icon: <FaServer />,
     tech: ['Spring Boot', 'Java', 'REST'],
-    accent: '#818cf8',
+    accent: '#2dd4bf',
   },
   {
     name: 'SIVEN · App',
@@ -441,8 +443,8 @@ function App() {
               <a href={SOCIALS.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" data-cursor>
                 <FaFacebook />
               </a>
-              <a href={SOCIALS.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok" data-cursor>
-                <SiTiktok />
+              <a href={SOCIALS.whatsapp} target="_blank" rel="noreferrer" aria-label="WhatsApp" data-cursor>
+                <FaWhatsapp />
               </a>
               <a href={SOCIALS.email} aria-label="Email" data-cursor>
                 <FaEnvelope />
@@ -602,13 +604,32 @@ function App() {
                   y te respondo pronto.
                 </p>
 
+                <div className="contact__methods reveal-child">
+                  <a href={SOCIALS.whatsapp} target="_blank" rel="noreferrer" className="contact-method" data-cursor>
+                    <span className="contact-method__icon"><FaWhatsapp /></span>
+                    <span className="contact-method__body">
+                      <span className="contact-method__label">WhatsApp</span>
+                      <span className="contact-method__value">{PHONE_DISPLAY}</span>
+                    </span>
+                  </a>
+                  <a href={SOCIALS.email} className="contact-method" data-cursor>
+                    <span className="contact-method__icon"><FaEnvelope /></span>
+                    <span className="contact-method__body">
+                      <span className="contact-method__label">Email</span>
+                      <span className="contact-method__value">{EMAIL}</span>
+                    </span>
+                  </a>
+                </div>
+
                 <a
-                  href={SOCIALS.email}
+                  href={SOCIALS.whatsapp}
+                  target="_blank"
+                  rel="noreferrer"
                   className="btn btn--primary btn--lg reveal-child"
                   data-magnetic
                   data-cursor
                 >
-                  <FaEnvelope /> Hablemos
+                  <FaWhatsapp /> Hablemos por WhatsApp
                 </a>
 
                 <div className="contact__socials reveal-child">
@@ -620,9 +641,6 @@ function App() {
                   </a>
                   <a href={SOCIALS.facebook} target="_blank" rel="noreferrer" className="contact__social" data-cursor>
                     <FaFacebook /> <span>Facebook</span>
-                  </a>
-                  <a href={SOCIALS.tiktok} target="_blank" rel="noreferrer" className="contact__social" data-cursor>
-                    <SiTiktok /> <span>TikTok</span>
                   </a>
                 </div>
               </div>

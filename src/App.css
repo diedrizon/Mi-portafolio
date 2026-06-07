@@ -54,7 +54,7 @@
   z-index: 0;
   overflow: hidden;
   background:
-    radial-gradient(1200px 700px at 80% -10%, rgba(168, 85, 247, 0.12), transparent 60%),
+    radial-gradient(1200px 700px at 80% -10%, rgba(59, 130, 246, 0.12), transparent 60%),
     radial-gradient(1000px 600px at 0% 100%, rgba(34, 211, 238, 0.1), transparent 55%),
     var(--bg);
 }
@@ -74,14 +74,14 @@
   top: -10%;
   left: -8%;
 }
-.aurora__blob--violet {
-  background: radial-gradient(circle, #a855f7, transparent 65%);
+.aurora__blob--blue {
+  background: radial-gradient(circle, #3b82f6, transparent 65%);
   top: 30%;
   right: -12%;
   animation-delay: -7s;
 }
-.aurora__blob--indigo {
-  background: radial-gradient(circle, #818cf8, transparent 65%);
+.aurora__blob--teal {
+  background: radial-gradient(circle, #2dd4bf, transparent 65%);
   bottom: -15%;
   left: 25%;
   animation-delay: -13s;
@@ -136,7 +136,7 @@
   height: 38px;
   margin-left: -19px;
   margin-top: -19px;
-  border: 1.5px solid rgba(168, 85, 247, 0.7);
+  border: 1.5px solid rgba(59, 130, 246, 0.7);
   transition: width 0.25s, height 0.25s, margin 0.25s, background 0.25s, border-color 0.25s;
 }
 .cursor-ring--active {
@@ -144,7 +144,7 @@
   height: 64px;
   margin-left: -32px;
   margin-top: -32px;
-  background: rgba(168, 85, 247, 0.12);
+  background: rgba(59, 130, 246, 0.12);
   border-color: var(--cyan);
 }
 body.has-custom-cursor,
@@ -172,7 +172,7 @@ body.has-custom-cursor button {
   transform: scaleX(0);
   background: var(--grad-main);
   z-index: 9998;
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.6);
 }
 
 /* ============================================================
@@ -255,7 +255,7 @@ body.has-custom-cursor button {
 }
 .navbar__cv:hover {
   transform: translateY(-1px);
-  box-shadow: var(--glow-violet);
+  box-shadow: var(--glow-blue);
 }
 @media (max-width: 720px) {
   .navbar__links,
@@ -287,7 +287,7 @@ body.has-custom-cursor button {
 .btn--primary {
   background: var(--grad-main);
   color: #06070d;
-  box-shadow: 0 8px 30px rgba(168, 85, 247, 0.35);
+  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.35);
 }
 .btn--primary:hover {
   box-shadow: 0 12px 44px rgba(34, 211, 238, 0.5);
@@ -361,7 +361,7 @@ body.has-custom-cursor button {
   position: absolute;
   inset: -8px;
   border-radius: 50%;
-  background: conic-gradient(from 0deg, var(--cyan), var(--indigo), var(--violet), var(--cyan));
+  background: conic-gradient(from 0deg, var(--cyan), var(--teal), var(--blue), var(--cyan));
   z-index: 1;
   animation: spin 6s linear infinite;
   filter: blur(2px);
@@ -751,6 +751,61 @@ body.has-custom-cursor button {
   max-width: 46ch;
   margin: 0 auto 32px;
 }
+.contact__methods {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 0 auto 28px;
+  max-width: 560px;
+}
+.contact-method {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  text-align: left;
+  transition: transform 0.2s, border-color 0.2s, background 0.2s;
+}
+.contact-method:hover {
+  transform: translateY(-3px);
+  border-color: var(--cyan);
+  background: rgba(255, 255, 255, 0.06);
+}
+.contact-method__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  font-size: 1.25rem;
+  color: var(--bg);
+  background: var(--grad-main);
+}
+.contact-method__body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.contact-method__label {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.contact-method__value {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: #fff;
+  font-size: 0.98rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .contact__socials {
   display: flex;
   flex-wrap: wrap;
@@ -773,7 +828,7 @@ body.has-custom-cursor button {
 .contact__social:hover {
   transform: translateY(-3px);
   color: #fff;
-  border-color: var(--violet);
+  border-color: var(--blue);
 }
 
 /* ============================================================
@@ -805,6 +860,8 @@ body.has-custom-cursor button {
 /* ============================================================
    RESPONSIVE
    ============================================================ */
+
+/* Tablet */
 @media (max-width: 860px) {
   .about__grid {
     grid-template-columns: 1fr;
@@ -813,20 +870,138 @@ body.has-custom-cursor button {
   .project-card--featured {
     grid-column: span 1;
   }
+  .projects__grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
 }
 
-@media (max-width: 520px) {
+/* Móvil */
+@media (max-width: 640px) {
+  .container {
+    width: 92%;
+  }
+  .section {
+    padding: 64px 0;
+  }
+  .section__title {
+    margin-bottom: 30px;
+  }
+
+  /* Navbar compacta */
+  .navbar {
+    top: 12px;
+    padding: 7px 7px 7px 14px;
+    width: max-content;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 100px 18px 90px;
+    min-height: auto;
+  }
+  .hero__badge {
+    font-size: 0.74rem;
+    padding: 6px 13px;
+    margin-bottom: 22px;
+  }
+  .hero__avatar-wrap,
+  .hero__avatar {
+    width: 104px;
+    height: 104px;
+  }
+  .hero__title {
+    line-height: 0.95;
+    margin-bottom: 18px;
+  }
+  .hero__lead {
+    font-size: 1rem;
+  }
   .hero__cta {
     flex-direction: column;
     align-items: stretch;
+    gap: 12px;
+    margin-bottom: 32px;
   }
   .hero__cta .btn {
     justify-content: center;
+    width: 100%;
   }
+  .hero__socials {
+    gap: 12px;
+  }
+  .hero__socials a {
+    width: 46px;
+    height: 46px;
+  }
+
+  /* Marquee */
+  .marquee {
+    margin: 28px 0 40px;
+    padding: 18px 0;
+  }
+  .marquee__track {
+    gap: 36px;
+  }
+  .marquee__item {
+    font-size: 1.2rem;
+  }
+  .marquee__item svg {
+    font-size: 1.4rem;
+  }
+
+  /* Stack */
+  .skills__grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .skill-card {
+    padding: 22px;
+  }
+
+  /* Proyectos: una columna cómoda */
+  .projects__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .project-card {
+    padding: 22px;
+  }
+
+  /* Contacto */
+  .contact {
+    padding: 34px 22px;
+    border-radius: 24px;
+  }
+  .contact__methods {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .contact__socials {
+    gap: 10px;
+  }
+  .contact__social {
+    flex: 1 1 calc(50% - 10px);
+    justify-content: center;
+  }
+
+  /* Footer */
+  .footer__inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+}
+
+/* Móvil estrecho */
+@media (max-width: 400px) {
   .about__stats {
     grid-template-columns: 1fr 1fr;
+    gap: 12px;
   }
-  .section__title {
-    margin-bottom: 32px;
+  .stat {
+    padding: 20px 14px;
+  }
+  .contact-method__value {
+    font-size: 0.9rem;
   }
 }

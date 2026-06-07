@@ -29,7 +29,7 @@ npm run preview  # previsualizar el build
 npm run lint     # eslint
 ```
 
-## 📝 Por personalizar
+## 📝 Personalización
 
-En `src/App.jsx`, el objeto `SOCIALS` tiene placeholders (`#`) para LinkedIn,
-Facebook y TikTok — reemplázalos por tus enlaces reales.
+Los datos de contacto y enlaces sociales están centralizados en `src/App.jsx`
+(constantes `EMAIL`, `PHONE_DISPLAY` y el objeto `SOCIALS`).
