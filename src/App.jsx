@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, lazy, Suspense } from 'react';
 import anime from 'animejs/lib/anime.es.js';
 
-import ParticleBackground from './components/ParticleBackground';
+// El canvas de partículas se carga de forma diferida (chunk aparte)
+const ParticleBackground = lazy(() => import('./components/ParticleBackground'));
 import AuroraBackground from './components/AuroraBackground';
 import CustomCursor from './components/CustomCursor';
 import ScrollProgress from './components/ScrollProgress';
@@ -354,7 +355,9 @@ function App() {
   return (
     <>
       <AuroraBackground />
-      <ParticleBackground />
+      <Suspense fallback={null}>
+        <ParticleBackground />
+      </Suspense>
       <CustomCursor />
       <ScrollProgress />
       <Navbar />
@@ -372,6 +375,10 @@ function App() {
                 src="/imagenmia.jpg"
                 alt="Diedrizon Fargas"
                 className="hero__avatar"
+                width="132"
+                height="132"
+                fetchPriority="high"
+                decoding="async"
               />
               <span className="hero__avatar-ring" />
             </div>

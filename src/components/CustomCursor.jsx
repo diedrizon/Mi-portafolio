@@ -47,9 +47,18 @@ const CustomCursor = () => {
       raf = requestAnimationFrame(loop);
     };
 
-    window.addEventListener('mousemove', onMove);
+    const onVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(raf);
+      } else {
+        raf = requestAnimationFrame(loop);
+      }
+    };
+
+    window.addEventListener('mousemove', onMove, { passive: true });
     window.addEventListener('mouseover', onOver);
     window.addEventListener('mouseout', onOut);
+    document.addEventListener('visibilitychange', onVisibility);
     loop();
     document.body.classList.add('has-custom-cursor');
 
@@ -57,6 +66,7 @@ const CustomCursor = () => {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseover', onOver);
       window.removeEventListener('mouseout', onOut);
+      document.removeEventListener('visibilitychange', onVisibility);
       cancelAnimationFrame(raf);
       document.body.classList.remove('has-custom-cursor');
     };
