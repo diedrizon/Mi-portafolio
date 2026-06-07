@@ -93,7 +93,7 @@ const PROJECTS = [
     desc: 'App móvil para gestión de órdenes de reparación.',
     icon: <FaTools />,
     tech: ['React Native', 'Expo', 'Firebase'],
-    accent: '#ec4899',
+    accent: '#818cf8',
   },
   {
     name: 'Farmacia Rosales',
@@ -101,7 +101,7 @@ const PROJECTS = [
     desc: 'Gestión de farmacia con control de inventario y ventas.',
     icon: <FaPrescriptionBottleAlt />,
     tech: ['Java', 'MySQL'],
-    accent: '#a3e635',
+    accent: '#22d3ee',
   },
   {
     name: 'Chontal Grill',
@@ -109,7 +109,7 @@ const PROJECTS = [
     desc: 'Control de pedidos y mesas para restaurante.',
     icon: <FaUtensils />,
     tech: ['React Native', 'MySQL'],
-    accent: '#22d3ee',
+    accent: '#a855f7',
   },
   {
     name: 'SIVEN · Backend',
@@ -117,7 +117,7 @@ const PROJECTS = [
     desc: 'API REST con Spring Boot para datos epidemiológicos.',
     icon: <FaServer />,
     tech: ['Spring Boot', 'Java', 'REST'],
-    accent: '#a855f7',
+    accent: '#818cf8',
   },
   {
     name: 'SIVEN · App',
@@ -125,7 +125,7 @@ const PROJECTS = [
     desc: 'Cliente móvil en Flutter consumiendo la API de SIVEN.',
     icon: <FaMobileAlt />,
     tech: ['Flutter', 'Dart'],
-    accent: '#ec4899',
+    accent: '#22d3ee',
   },
 ];
 

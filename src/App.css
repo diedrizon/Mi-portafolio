@@ -80,8 +80,8 @@
   right: -12%;
   animation-delay: -7s;
 }
-.aurora__blob--pink {
-  background: radial-gradient(circle, #ec4899, transparent 65%);
+.aurora__blob--indigo {
+  background: radial-gradient(circle, #818cf8, transparent 65%);
   bottom: -15%;
   left: 25%;
   animation-delay: -13s;
@@ -333,8 +333,8 @@ body.has-custom-cursor button {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--lime);
-  box-shadow: 0 0 10px var(--lime);
+  background: var(--cyan);
+  box-shadow: 0 0 10px var(--cyan);
   animation: pulse-dot 1.8s ease-in-out infinite;
 }
 @keyframes pulse-dot {
@@ -361,7 +361,7 @@ body.has-custom-cursor button {
   position: absolute;
   inset: -8px;
   border-radius: 50%;
-  background: conic-gradient(from 0deg, var(--cyan), var(--violet), var(--pink), var(--cyan));
+  background: conic-gradient(from 0deg, var(--cyan), var(--indigo), var(--violet), var(--cyan));
   z-index: 1;
   animation: spin 6s linear infinite;
   filter: blur(2px);
