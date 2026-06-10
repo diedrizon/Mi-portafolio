@@ -1,36 +1,111 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/jpeg" href="/imagenmia.jpg" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Marca la presencia de JS antes de pintar: la CSS solo oculta
+         contenido animable bajo html.js, así no hay flash ni página
+         vacía si el script falla o está desactivado. -->
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+
+    <title>Diedrizon Fargas — Desarrollador de software y analista de datos BI</title>
     <meta
       name="description"
-      content="Portafolio de Diedrizon Fargas — Desarrollador Fullstack. React, React Native, Flutter, Java & Spring Boot."
+      content="Desarrollador de software y analista de datos en Nicaragua. Construyo sistemas web, móviles y de BI completos: del modelo de datos a dashboards e indicadores que sostienen decisiones."
     />
-    <meta name="theme-color" content="#06070d" />
+    <meta name="author" content="Diedrizon Domingo Fargas Barrera" />
+    <link rel="canonical" href="https://portafolio-de-diedrizon.netlify.app/" />
+    <meta name="theme-color" content="#0a0d12" />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Diedrizon Fargas · Fullstack Developer" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_NI" />
+    <meta property="og:site_name" content="Portafolio de Diedrizon Fargas" />
+    <meta property="og:title" content="Diedrizon Fargas — Software y datos BI" />
     <meta
       property="og:description"
-      content="Construyo experiencias web y móviles con React, Flutter y Java."
+      content="Sistemas web, móviles y de BI completos: del modelo de datos a dashboards e indicadores que sostienen decisiones."
     />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="/imagenmia.jpg" />
+    <meta property="og:url" content="https://portafolio-de-diedrizon.netlify.app/" />
+    <meta
+      property="og:image"
+      content="https://portafolio-de-diedrizon.netlify.app/og.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
-    <!-- Fuentes -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Diedrizon Fargas — Software y datos BI" />
+    <meta
+      name="twitter:description"
+      content="Sistemas web, móviles y de BI completos: del modelo de datos a dashboards e indicadores."
+    />
+    <meta
+      name="twitter:image"
+      content="https://portafolio-de-diedrizon.netlify.app/og.png"
+    />
+
+    <!-- Iconos / PWA -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Fuentes críticas del hero (woff2 subset latin, auto-hospedadas) -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="/fonts/archivo-black-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/archivo-var-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
 
-    <title>Diedrizon Fargas · Fullstack Developer</title>
+    <!-- Datos estructurados -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Diedrizon Domingo Fargas Barrera",
+        "alternateName": "Diedrizon Fargas",
+        "url": "https://portafolio-de-diedrizon.netlify.app/",
+        "image": "https://portafolio-de-diedrizon.netlify.app/og.png",
+        "jobTitle": "Desarrollador de software y analista de datos BI",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Juigalpa",
+          "addressRegion": "Chontales",
+          "addressCountry": "NI"
+        },
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "UNAN"
+        },
+        "knowsAbout": [
+          "React",
+          "TypeScript",
+          "Spring Boot",
+          "Flutter",
+          "Power BI",
+          "PostgreSQL",
+          "MySQL",
+          "Business Intelligence"
+        ],
+        "sameAs": [
+          "https://github.com/diedrizon",
+          "https://www.linkedin.com/in/diedrizon-fargas-a65181238"
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

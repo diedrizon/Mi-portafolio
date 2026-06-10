@@ -1,0 +1,28 @@
+{
+  "name": "Diedrizon Fargas — Portafolio",
+  "short_name": "Diedrizon",
+  "description": "Desarrollador de software y analista de datos BI en Nicaragua.",
+  "lang": "es",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0d12",
+  "theme_color": "#0a0d12",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

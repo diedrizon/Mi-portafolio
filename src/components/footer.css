@@ -1,0 +1,113 @@
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.footer {
+  padding: clamp(40px, 6vw, 64px) 0 32px;
+}
+
+.footer .axis {
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+
+.footer__grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px 32px;
+}
+
+.footer__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--paper-dim);
+}
+
+.footer__mark {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  color: var(--amber);
+}
+
+.footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 22px;
+  padding: 0;
+}
+
+.footer__nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+  transition: color 0.2s var(--ease-out);
+}
+
+.footer__nav a:hover {
+  color: var(--amber-bright);
+}
+
+.footer__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.footer__stack {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+}
+
+.footer__top {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  color: var(--paper-soft);
+  transition:
+    color 0.2s var(--ease-out),
+    border-color 0.2s var(--ease-out),
+    transform 0.2s var(--ease-out),
+    background-color 0.2s var(--ease-out);
+}
+
+.footer__top:hover {
+  color: var(--amber-bright);
+  border-color: var(--amber-30);
+  background: var(--amber-12);
+  transform: translateY(-2px);
+}
+
+.footer__top svg {
+  width: 16px;
+  height: 16px;
+}
+
+@media (max-width: 640px) {
+  .footer__grid {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -1,0 +1,233 @@
+/* ============================================================
+   [04] PROYECTOS
+   ============================================================ */
+
+/* ---------- Destacados (filas de caso de estudio) ---------- */
+
+.projects__featured {
+  border-top: 1px solid var(--line-strong);
+}
+
+.proj {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 20px 40px;
+  padding: clamp(30px, 4.5vw, 46px) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.proj__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.proj__index {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--amber);
+}
+
+.proj__status {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+  max-width: 18ch;
+  line-height: 1.6;
+}
+
+.proj__name {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.45rem, 3.4vw, 2.1rem);
+  line-height: 1.06;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+
+.proj__desc {
+  max-width: 62ch;
+  margin-top: 14px;
+  font-size: clamp(0.95rem, 1.7vw, 1.02rem);
+  line-height: 1.7;
+  color: var(--paper-soft);
+}
+
+.proj__tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 0;
+}
+
+.proj__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.proj__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 9px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper);
+  transition:
+    border-color 0.2s var(--ease-out),
+    color 0.2s var(--ease-out),
+    background-color 0.2s var(--ease-out);
+}
+
+.proj__link svg {
+  width: 13px;
+  height: 13px;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.proj__link:hover {
+  border-color: var(--amber);
+  color: var(--amber-bright);
+  background: var(--amber-12);
+}
+
+.proj__link:hover svg {
+  transform: translate(2px, -2px);
+}
+
+/* ---------- Subtítulo "más proyectos" ---------- */
+
+.projects__more-label {
+  margin: clamp(44px, 7vw, 72px) 0 24px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+}
+
+.projects__more-label span {
+  color: var(--amber);
+  margin-right: 8px;
+}
+
+/* ---------- Rejilla compacta ---------- */
+
+.projects__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.pcard {
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--ink-900);
+  transition:
+    border-color 0.25s var(--ease-out),
+    transform 0.25s var(--ease-out);
+}
+
+.pcard:hover {
+  border-color: var(--amber-30);
+  transform: translateY(-3px);
+}
+
+.pcard__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.pcard__name {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--paper);
+  line-height: 1.25;
+}
+
+.pcard__status {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.pcard__desc {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--paper-soft);
+  flex-grow: 1;
+}
+
+.pcard__foot {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.pcard__tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+}
+
+.pcard .proj__links {
+  margin-top: 14px;
+}
+
+.pcard .proj__link {
+  min-height: 40px;
+  padding: 8px 13px;
+  font-size: 0.64rem;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 760px) {
+  .proj {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .proj__meta {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 18px;
+  }
+
+  .proj__status {
+    max-width: none;
+  }
+}

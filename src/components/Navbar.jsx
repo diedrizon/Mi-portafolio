@@ -1,71 +1,137 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { NAV } from '../data/profile';
+import { MenuIcon, CloseIcon, DownloadIcon } from './Icons';
+import './navbar.css';
 
-const LINKS = [
-  { id: 'sobre-mi', label: 'Sobre mí' },
-  { id: 'stack', label: 'Stack' },
-  { id: 'proyectos', label: 'Proyectos' },
-  { id: 'contacto', label: 'Contacto' },
-];
-
-/** Barra de navegación flotante tipo "pill" con scroll suave y sección activa. */
-const Navbar = () => {
-  const [active, setActive] = useState('inicio');
+/**
+ * Barra de navegación técnica:
+ * - Progreso de scroll (línea ámbar superior, transform-only).
+ * - Sección activa vía IntersectionObserver (sin cálculos en scroll).
+ * - Menú móvil accesible: aria-expanded, Escape y clic fuera para cerrar.
+ */
+export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState('inicio');
+  const [open, setOpen] = useState(false);
+  const progressRef = useRef(null);
+  const navRef = useRef(null);
 
+  /* Estado "scrolled" + barra de progreso en un único listener pasivo */
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - doc.clientHeight || 1;
+      if (progressRef.current) {
+        progressRef.current.style.transform = `scaleX(${doc.scrollTop / max})`;
+      }
+      setScrolled(doc.scrollTop > 24);
+    };
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+    update();
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  /* Sección activa */
   useEffect(() => {
-    const ids = ['inicio', ...LINKS.map((l) => l.id)];
-    const sections = ids
-      .map((id) => document.getElementById(id))
-      .filter(Boolean);
-    const obs = new IntersectionObserver(
+    const ids = ['inicio', ...NAV.map((l) => l.id)];
+    const sections = ids.map((id) => document.getElementById(id)).filter(Boolean);
+    const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
           if (e.isIntersecting) setActive(e.target.id);
         });
       },
-      { rootMargin: '-45% 0px -50% 0px' }
+      { rootMargin: '-40% 0px -55% 0px' }
     );
-    sections.forEach((s) => obs.observe(s));
-    return () => obs.disconnect();
+    sections.forEach((s) => io.observe(s));
+    return () => io.disconnect();
   }, []);
 
-  const go = (e, id) => {
-    e.preventDefault();
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  };
+  /* Cierre del menú móvil: Escape y clic fuera */
+  useEffect(() => {
+    if (!open) return undefined;
+    const onKey = (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    const onClick = (e) => {
+      if (navRef.current && !navRef.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('pointerdown', onClick);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('pointerdown', onClick);
+    };
+  }, [open]);
 
   return (
-    <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
-      <a href="#inicio" className="navbar__brand" onClick={(e) => go(e, 'inicio')} data-cursor>
-        <span className="navbar__brand-mark">DF</span>
-        <span className="navbar__brand-text">diedrizon</span>
-      </a>
-      <ul className="navbar__links">
-        {LINKS.map((l) => (
-          <li key={l.id}>
-            <a
-              href={`#${l.id}`}
-              className={active === l.id ? 'is-active' : ''}
-              onClick={(e) => go(e, l.id)}
-              data-cursor
-            >
-              {l.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-      <a href="/CV-Diedrizon.pdf" download className="navbar__cv" data-cursor>
-        CV
-      </a>
-    </nav>
-  );
-};
+    <header ref={navRef} className={`nav ${scrolled || open ? 'nav--solid' : ''}`}>
+      <div ref={progressRef} className="nav__progress" aria-hidden="true" />
 
-export default Navbar;
+      <div className="container nav__inner">
+        <a href="#inicio" className="nav__brand" aria-label="Ir al inicio">
+          <span className="nav__brand-mark">DF</span>
+          <span className="nav__brand-text">Fargas — Portafolio</span>
+        </a>
+
+        <nav className="nav__links" aria-label="Secciones">
+          <ul>
+            {NAV.map((l) => (
+              <li key={l.id}>
+                <a
+                  href={`#${l.id}`}
+                  aria-current={active === l.id ? 'true' : undefined}
+                >
+                  <span className="nav__num">{l.index}</span>
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div className="nav__actions">
+          <a href="/CV-Diedrizon.pdf" download className="nav__cv">
+            CV <DownloadIcon />
+          </a>
+          <button
+            type="button"
+            className="nav__toggle"
+            aria-expanded={open}
+            aria-controls="menu-movil"
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <CloseIcon /> : <MenuIcon />}
+            <span className="sr-only">{open ? 'Cerrar menú' : 'Abrir menú'}</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Panel móvil */}
+      <div id="menu-movil" className={`nav__sheet ${open ? 'nav__sheet--open' : ''}`}>
+        <ul>
+          {NAV.map((l) => (
+            <li key={l.id}>
+              <a
+                href={`#${l.id}`}
+                aria-current={active === l.id ? 'true' : undefined}
+                onClick={() => setOpen(false)}
+              >
+                <span className="nav__num">{l.index}</span>
+                {l.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </header>
+  );
+}

@@ -1,0 +1,126 @@
+/* ============================================================
+   [03] STACK
+   ============================================================ */
+
+/* ---------- Ticker full-bleed ---------- */
+
+.stack__ticker {
+  overflow: hidden;
+  border-block: 1px solid var(--line);
+  padding-block: 18px;
+  margin-bottom: clamp(44px, 7vw, 72px);
+  /* Aísla el repintado del resto de la página */
+  contain: layout paint;
+}
+
+.stack__track {
+  display: flex;
+  width: max-content;
+  animation: stack-marquee 30s linear infinite;
+  will-change: transform;
+}
+
+.stack__ticker:hover .stack__track {
+  animation-play-state: paused;
+}
+
+.stack__list {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper-soft);
+  white-space: nowrap;
+}
+
+.stack__list li {
+  display: inline-flex;
+  align-items: center;
+}
+
+.stack__sep {
+  margin-inline: 26px;
+  font-size: 0.5rem;
+  color: var(--amber);
+}
+
+@keyframes stack-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stack__track {
+    animation: none;
+    flex-wrap: wrap;
+    width: auto;
+  }
+
+  .stack__list:last-child {
+    display: none;
+  }
+
+  .stack__list {
+    flex-wrap: wrap;
+    row-gap: 10px;
+    padding-inline: 4%;
+  }
+}
+
+/* ---------- Matriz de capacidades ---------- */
+
+.stack__matrix {
+  margin: 0;
+  border-top: 1px solid var(--line-strong);
+}
+
+.stack__row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 18px 32px;
+  align-items: start;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.stack__domain {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber);
+  padding-top: 7px;
+}
+
+.stack__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+}
+
+.stack__items .chip:hover {
+  border-color: var(--amber-30);
+  color: var(--paper);
+}
+
+@media (max-width: 700px) {
+  .stack__row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 22px 0;
+  }
+
+  .stack__domain {
+    padding-top: 0;
+  }
+}

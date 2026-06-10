@@ -1,0 +1,64 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(1100px 620px at 80% -10%, rgba(245, 166, 35, 0.055), transparent 62%),
+    radial-gradient(900px 540px at -10% 105%, rgba(237, 232, 221, 0.03), transparent 60%),
+    var(--ink-950);
+}
+
+.backdrop__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(237, 232, 221, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(237, 232, 221, 0.032) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(130% 95% at 50% 32%, #000 30%, transparent 86%);
+  -webkit-mask-image: radial-gradient(130% 95% at 50% 32%, #000 30%, transparent 86%);
+}
+
+/* Cruces "+" dispersas en intersecciones (SVG inline, una sola capa) */
+.backdrop__cross {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cpath d='M28 23v10M23 28h10' stroke='rgba(237,232,221,0.16)' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 280px 280px;
+  mask-image: radial-gradient(120% 90% at 50% 30%, #000 25%, transparent 80%);
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 30%, #000 25%, transparent 80%);
+}
+
+/* Línea de barrido: un transform animado, nada más */
+.backdrop__scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -2px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 8%,
+    rgba(245, 166, 35, 0.4) 50%,
+    transparent 92%
+  );
+  opacity: 0.5;
+  animation: backdrop-scan 17s linear infinite;
+}
+
+@keyframes backdrop-scan {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop__scan {
+    display: none;
+  }
+}

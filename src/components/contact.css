@@ -1,0 +1,148 @@
+/* ============================================================
+   [05] CONTACTO
+   ============================================================ */
+
+.contact__panel {
+  max-width: 760px;
+  padding: clamp(26px, 4vw, 44px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--ink-850), var(--ink-900));
+}
+
+.contact__lead {
+  max-width: 52ch;
+  font-size: clamp(1rem, 1.9vw, 1.1rem);
+  line-height: 1.7;
+  color: var(--paper-soft);
+}
+
+.contact__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.contact__rows {
+  margin: 32px 0 0;
+  border-top: 1px solid var(--line-strong);
+}
+
+.contact__row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 12px 24px;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.contact__row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.contact__row dt {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+}
+
+.contact__row dd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin: 0;
+}
+
+.contact__value {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: var(--paper);
+  overflow-wrap: anywhere;
+}
+
+.contact__copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper-soft);
+  transition:
+    border-color 0.2s var(--ease-out),
+    color 0.2s var(--ease-out),
+    background-color 0.2s var(--ease-out);
+}
+
+.contact__copy:hover {
+  border-color: var(--amber);
+  color: var(--amber-bright);
+  background: var(--amber-12);
+}
+
+.contact__copy svg {
+  width: 13px;
+  height: 13px;
+}
+
+.contact__socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+}
+
+.contact__socials a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--paper-soft);
+  transition:
+    border-color 0.2s var(--ease-out),
+    color 0.2s var(--ease-out),
+    background-color 0.2s var(--ease-out);
+}
+
+.contact__socials a:hover {
+  border-color: var(--amber-30);
+  color: var(--amber-bright);
+  background: var(--amber-12);
+}
+
+.contact__socials svg {
+  width: 15px;
+  height: 15px;
+}
+
+@media (max-width: 560px) {
+  .contact__cta .btn {
+    width: 100%;
+  }
+
+  .contact__row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}

@@ -1,0 +1,383 @@
+/* ============================================================
+   GLOBAL — tokens, fuentes, base, utilidades y motivos de marca
+   ============================================================ */
+
+/* ---------- Fuentes auto-hospedadas (subset latin, woff2) ---------- */
+@font-face {
+  font-family: 'Archivo Black';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/archivo-black-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Archivo Var';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/archivo-var-latin.woff2') format('woff2-variations');
+}
+@font-face {
+  font-family: 'Martian Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/martian-mono-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Martian Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/martian-mono-latin-500-normal.woff2') format('woff2');
+}
+
+/* ---------- Tokens ---------- */
+:root {
+  /* Tinta (fondos) */
+  --ink-950: #0a0d12;
+  --ink-900: #0e1219;
+  --ink-850: #121823;
+  --ink-800: #161d29;
+
+  /* Texto (papel cálido) */
+  --paper: #ede8dd;
+  --paper-soft: #b9b3a6;
+  --paper-dim: #8a857b;
+
+  /* Acento único: ámbar de fósforo */
+  --amber: #f5a623;
+  --amber-bright: #ffbe45;
+  --amber-ink: #181002;
+  --amber-12: rgba(245, 166, 35, 0.12);
+  --amber-30: rgba(245, 166, 35, 0.3);
+
+  /* Estado */
+  --ok: #84d28f;
+
+  /* Líneas */
+  --line: rgba(237, 232, 221, 0.1);
+  --line-strong: rgba(237, 232, 221, 0.22);
+
+  /* Tipografía */
+  --font-display: 'Archivo Black', 'Archivo Var', system-ui, sans-serif;
+  --font-body: 'Archivo Var', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Martian Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* Métrica */
+  --container: 1140px;
+  --nav-h: 64px;
+  --radius: 12px;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  color-scheme: dark;
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--ink-950);
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-weight: 420;
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--amber);
+  color: var(--amber-ink);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+}
+
+strong {
+  font-weight: 640;
+  color: var(--paper);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--ink-950);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ink-800);
+  border-radius: 99px;
+  border: 2px solid var(--ink-950);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--amber);
+}
+
+/* ---------- Accesibilidad ---------- */
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  padding: 10px 16px;
+  background: var(--amber);
+  color: var(--amber-ink);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  border-radius: 8px;
+  transform: translateY(-200%);
+  transition: transform 0.2s var(--ease-out);
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* ---------- Layout ---------- */
+.container {
+  width: min(92%, var(--container));
+  margin-inline: auto;
+}
+
+.section {
+  position: relative;
+  padding-block: clamp(76px, 11vw, 136px);
+  scroll-margin-top: calc(var(--nav-h) + 12px);
+}
+
+/* Cabecera de sección: índice mono + título + regla de eje */
+.section-head {
+  margin-bottom: clamp(36px, 6vw, 60px);
+}
+
+.kicker {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+  margin-bottom: 18px;
+}
+.kicker__index {
+  color: var(--amber);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 4.6vw, 3rem);
+  line-height: 1.04;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  max-width: 21ch;
+  text-wrap: balance;
+}
+
+/* ---------- Motivo: regla de eje con marcas (ticks) ---------- */
+.axis {
+  position: relative;
+  height: 10px;
+  margin-top: 26px;
+}
+.axis::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--line-strong);
+}
+.axis::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 1px;
+  height: 6px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--line) 0 1px,
+    transparent 1px 28px
+  );
+}
+.axis i {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 34px;
+  height: 3px;
+  background: var(--amber);
+}
+
+/* ---------- Motivo: marcas de registro "+" en esquinas ---------- */
+.marks {
+  position: relative;
+}
+.marks::before,
+.marks::after {
+  content: '';
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  background:
+    linear-gradient(var(--paper-dim), var(--paper-dim)) center / 9px 1px no-repeat,
+    linear-gradient(var(--paper-dim), var(--paper-dim)) center / 1px 9px no-repeat;
+  pointer-events: none;
+}
+.marks::before {
+  top: -5px;
+  left: -5px;
+}
+.marks::after {
+  bottom: -5px;
+  right: -5px;
+}
+
+/* ---------- Botones ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color 0.2s var(--ease-out),
+    border-color 0.2s var(--ease-out),
+    color 0.2s var(--ease-out),
+    box-shadow 0.25s var(--ease-out);
+}
+.btn svg {
+  font-size: 1.05rem;
+}
+
+.btn--primary {
+  background: var(--amber);
+  color: var(--amber-ink);
+  box-shadow: 0 0 0 0 rgba(245, 166, 35, 0);
+}
+.btn--primary:hover {
+  background: var(--amber-bright);
+  box-shadow: 0 8px 28px -8px rgba(245, 166, 35, 0.55);
+}
+
+.btn--ghost {
+  border-color: var(--line-strong);
+  color: var(--paper);
+  background: transparent;
+}
+.btn--ghost:hover {
+  border-color: var(--amber);
+  color: var(--amber-bright);
+  background: var(--amber-12);
+}
+
+/* ---------- Chips ---------- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--paper-soft);
+  background: transparent;
+  transition: border-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+
+/* ---------- Sistema de reveal (solo si hay JS) ---------- */
+html.js [data-reveal] > * {
+  opacity: 0;
+  transform: translateY(22px);
+}
+html.js [data-reveal].in > * {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.65s var(--ease-out),
+    transform 0.7s var(--ease-out);
+  transition-delay: calc(var(--ri, 0) * 75ms);
+}
+
+/* ---------- Movimiento reducido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html.js [data-reveal] > * {
+    opacity: 1;
+    transform: none;
+  }
+}

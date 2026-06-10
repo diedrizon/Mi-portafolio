@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://portafolio-de-diedrizon.netlify.app/sitemap.xml

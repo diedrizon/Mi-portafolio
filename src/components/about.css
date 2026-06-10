@@ -1,0 +1,189 @@
+/* ============================================================
+   [02] PERFIL
+   ============================================================ */
+
+.about__grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(36px, 6vw, 80px);
+  align-items: start;
+}
+
+/* ---------- Texto ---------- */
+
+.about__text p {
+  max-width: 58ch;
+  font-size: clamp(1rem, 1.8vw, 1.08rem);
+  line-height: 1.75;
+  color: var(--paper-soft);
+}
+
+.about__text p + p {
+  margin-top: 18px;
+}
+
+.about__domains {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 26px;
+  padding: 0;
+}
+
+.about__timeline {
+  margin: 30px 0 0;
+  padding: 0 0 0 2px;
+  list-style: none;
+  border-left: 1px solid var(--line-strong);
+}
+
+.about__timeline li {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 10px 0 10px 22px;
+}
+
+.about__timeline li::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: var(--amber);
+}
+
+.about__tl-year {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--amber);
+}
+
+.about__tl-text {
+  font-size: 0.92rem;
+  color: var(--paper-soft);
+}
+
+/* ---------- Panel de indicadores ---------- */
+
+.about__stats {
+  padding: clamp(22px, 2.6vw, 30px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--ink-850), var(--ink-900));
+}
+
+.about__stats-label {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.about__kpis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 0;
+}
+
+.about__kpi {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.about__kpi:nth-child(odd) {
+  border-right: 1px solid var(--line);
+  padding-left: 2px;
+}
+
+.about__kpi:nth-child(even) {
+  padding-right: 2px;
+}
+
+.about__kpi:nth-last-child(-n + 2) {
+  border-bottom: 0;
+}
+
+/* dt visual debajo del valor manteniendo orden semántico dt→dd */
+.about__kpi dt {
+  order: 2;
+  margin-top: 8px;
+  font-size: 0.82rem;
+  color: var(--paper-soft);
+}
+
+.about__kpi dd {
+  order: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.about__kpi-value {
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 4.5vw, 2.7rem);
+  line-height: 1;
+  color: var(--paper);
+  font-variant-numeric: tabular-nums;
+}
+
+.about__kpi-note {
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+}
+
+.about__stats-foot {
+  margin-top: 4px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--line-strong);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 900px) {
+  .about__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about__stats {
+    max-width: 560px;
+  }
+}
+
+@media (max-width: 420px) {
+  .about__kpis {
+    grid-template-columns: 1fr;
+  }
+
+  .about__kpi:nth-child(odd) {
+    border-right: 0;
+  }
+
+  .about__kpi:nth-last-child(-n + 2) {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .about__kpi:last-child {
+    border-bottom: 0;
+  }
+}
