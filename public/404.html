@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>404 — Señal perdida · Diedrizon Fargas</title>
+    <style>
+      @font-face {
+        font-family: 'Archivo Black';
+        src: url('/fonts/archivo-black-latin-400-normal.woff2') format('woff2');
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Martian Mono';
+        src: url('/fonts/martian-mono-latin-400-normal.woff2') format('woff2');
+        font-display: swap;
+      }
+      * { margin: 0; box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(900px 540px at 50% 115%, rgba(245,166,35,0.06), transparent 60%),
+          #0a0d12;
+        color: #ede8dd;
+        font-family: 'Martian Mono', monospace;
+        text-align: center;
+        overflow: hidden;
+      }
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(237,232,221,0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(237,232,221,0.03) 1px, transparent 1px);
+        background-size: 56px 56px;
+        pointer-events: none;
+      }
+      main { position: relative; padding: 24px; }
+      .code {
+        font-family: 'Archivo Black', sans-serif;
+        font-size: clamp(5rem, 24vw, 13rem);
+        line-height: 1;
+        color: transparent;
+        -webkit-text-stroke: 2px #ede8dd;
+      }
+      .code em { font-style: normal; color: #f5a623; -webkit-text-stroke: 0; }
+      h1 {
+        margin-top: 18px;
+        font-size: clamp(0.72rem, 2.4vw, 0.9rem);
+        font-weight: 400;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: #b9b3a6;
+        min-height: 1.4em;
+      }
+      p { margin-top: 10px; font-size: 0.68rem; letter-spacing: 0.12em; color: #8a857b; }
+      a {
+        display: inline-block;
+        margin-top: 34px;
+        padding: 14px 22px;
+        border: 1px solid rgba(237,232,221,0.22);
+        border-radius: 10px;
+        color: #ede8dd;
+        text-decoration: none;
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        transition: border-color .2s, color .2s, background .2s;
+      }
+      a:hover, a:focus-visible { border-color: #f5a623; color: #ffbe45; background: rgba(245,166,35,0.08); }
+      .corner {
+        position: fixed;
+        font-size: 0.6rem;
+        letter-spacing: 0.18em;
+        color: #8a857b;
+        text-transform: uppercase;
+      }
+      .tl { top: 24px; left: 26px; color: #f5a623; }
+      .br { bottom: 24px; right: 26px; }
+    </style>
+  </head>
+  <body>
+    <span class="corner tl">DF — 2026</span>
+    <span class="corner br">ERR · 404</span>
+    <main>
+      <div class="code" aria-hidden="true">4<em>0</em>4</div>
+      <h1 id="msg">Señal perdida</h1>
+      <p>La ruta solicitada no existe en este instrumento.</p>
+      <a href="/">← Volver al observatorio</a>
+    </main>
+    <script>
+      (function () {
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var el = document.getElementById('msg');
+        var txt = 'Señal perdida';
+        var glyphs = '01<>/+·▮░—#=';
+        var frame = 0, total = 26;
+        (function tick() {
+          frame++;
+          var reveal = Math.floor((frame / total) * txt.length);
+          var out = '';
+          for (var i = 0; i < txt.length; i++) {
+            out += txt[i] === ' ' ? ' ' : i < reveal ? txt[i] : glyphs[(Math.random() * glyphs.length) | 0];
+          }
+          el.textContent = out;
+          if (frame < total) requestAnimationFrame(tick);
+          else el.textContent = txt;
+        })();
+      })();
+    </script>
+  </body>
+</html>

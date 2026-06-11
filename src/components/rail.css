@@ -1,0 +1,59 @@
+.rail {
+  position: fixed;
+  right: 26px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 90;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+@media (min-width: 1180px) {
+  .rail {
+    display: flex;
+  }
+}
+
+.rail__label {
+  writing-mode: vertical-rl;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--amber);
+  font-variant-numeric: tabular-nums;
+}
+
+.rail__ticks {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.rail__ticks a {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 26px;
+}
+
+.rail__ticks i {
+  width: 14px;
+  height: 1px;
+  background: var(--line-strong);
+  transition:
+    width 0.25s var(--ease-out),
+    background-color 0.25s var(--ease-out);
+}
+
+.rail__ticks a:hover i {
+  background: var(--paper-soft);
+}
+
+.rail__ticks a.is-active i {
+  width: 26px;
+  height: 2px;
+  background: var(--amber);
+}

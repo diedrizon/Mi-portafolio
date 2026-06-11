@@ -1,0 +1,28 @@
+.odo {
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.odo__win {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  line-height: 1;
+}
+
+.odo__col {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1;
+  will-change: transform;
+}
+
+.odo__col span {
+  display: block;
+  height: 1em;
+}
+
+.odo__suffix {
+  color: var(--amber);
+  margin-left: 0.04em;
+}

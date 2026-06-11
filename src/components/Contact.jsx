@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { initMarquee } from '../lib/marquee';
 import { EMAIL, PHONE_DISPLAY, SOCIALS } from '../data/profile';
 import {
   SOCIAL_ICONS,
@@ -16,8 +17,12 @@ import './contact.css';
 export default function Contact() {
   const [copied, setCopied] = useState(false);
   const timer = useRef(0);
+  const stripRef = useRef(null);
 
   useEffect(() => () => clearTimeout(timer.current), []);
+
+  /* Cinta inversa reactiva a la velocidad del scroll */
+  useEffect(() => initMarquee(stripRef.current, { speed: 70, reverse: false }), []);
 
   const copyEmail = async () => {
     try {
@@ -34,14 +39,46 @@ export default function Contact() {
   const whatsapp = SOCIALS.find((s) => s.id === 'whatsapp');
   const networks = SOCIALS.filter((s) => s.id !== 'whatsapp' && s.id !== 'mail');
 
+  const STRIP = ['Disponible para proyectos', 'Jun 2026', 'Software + BI', 'Remoto / Nicaragua'];
+
   return (
     <section id="contacto" className="section contact">
+      {/* Cinta inversa a sangre completa */}
+      <div className="contact__strip" aria-hidden="true">
+        <div className="contact__strip-track" ref={stripRef}>
+          {[0, 1].map((k) => (
+            <ul className="contact__strip-list" key={k}>
+              {STRIP.concat(STRIP).map((t, i) => (
+                <li key={i}>
+                  {t} <span className="contact__strip-sep">◆</span>
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
+      </div>
+
       <div className="container">
         <header className="section-head">
           <p className="kicker">
             <span className="kicker__index">[05]</span> Contacto
           </p>
-          <h2 className="section-title">¿Tenés un sistema en mente?</h2>
+          <h2 className="contact__giant">
+            <a
+              href={`mailto:${EMAIL}`}
+              aria-label="Hablemos — enviar correo"
+              data-cursor
+              data-magnetic="0.12"
+            >
+              <span aria-hidden="true" className="contact__giant-outline">
+                Hablemos.
+              </span>
+              <span aria-hidden="true" className="contact__giant-fill">
+                Hablemos.
+              </span>
+            </a>
+          </h2>
+          <p className="contact__sub">¿Tenés un sistema en mente?</p>
           <div className="axis" aria-hidden="true">
             <i />
           </div>
@@ -59,10 +96,12 @@ export default function Contact() {
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn--primary"
+              data-magnetic
+              data-cursor
             >
               Escribir por WhatsApp <ArrowUpRightIcon />
             </a>
-            <a href={`mailto:${EMAIL}`} className="btn btn--ghost">
+            <a href={`mailto:${EMAIL}`} className="btn btn--ghost" data-magnetic data-cursor>
               Enviar correo
             </a>
           </div>
@@ -76,6 +115,7 @@ export default function Contact() {
                   type="button"
                   className="contact__copy"
                   onClick={copyEmail}
+                  data-cursor
                 >
                   {copied ? <CheckIcon /> : <CopyIcon />}
                   {copied ? 'Copiado' : 'Copiar'}

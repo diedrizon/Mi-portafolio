@@ -1,6 +1,17 @@
+import { useLayoutEffect, useRef } from 'react';
 import { STATS, DOMAINS, IDENTITY } from '../data/profile';
-import useCountUp from '../hooks/useCountUp';
+import Odometer from './Odometer';
+import { gsap, reduced } from '../lib/motion';
+import retratoAvif from '../assets/retrato.avif';
+import retratoWebp from '../assets/retrato.webp';
 import './about.css';
+
+const STATEMENT = [
+  ['No'], ['hago'], ['páginas'], ['sueltas.'],
+  ['Construyo'], ['sistemas', 'em'], ['que'], ['capturan'], ['datos,', 'em'],
+  ['los'], ['ordenan'], ['y'], ['los'], ['convierten'], ['en'],
+  ['decisiones.', 'em'],
+];
 
 /**
  * [02] Perfil — qué hace, para quién y con qué evidencia.
@@ -8,7 +19,64 @@ import './about.css';
  * en viewport; con prefers-reduced-motion muestran el valor final.
  */
 export default function About() {
-  const statsRef = useCountUp();
+  const mfRef = useRef(null);
+  const figRef = useRef(null);
+
+  /* Ensamblado del retrato: revelado + capa ámbar que se asienta */
+  useLayoutEffect(() => {
+    const fig = figRef.current;
+    if (reduced()) {
+      gsap.set(fig, { clearProps: 'all' });
+      return undefined;
+    }
+    const ctx = gsap.context(() => {
+      gsap.set(fig, { clipPath: 'inset(100% 0% 0% 0%)' });
+      gsap.set('.about__fig-ghost', { x: -22, opacity: 0.5 });
+      gsap.set('.about__fig-scan', { yPercent: -110 });
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: fig, start: 'top 80%', once: true },
+        defaults: { ease: 'expo.out' },
+      });
+      tl.to(fig, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2 })
+        .to('.about__fig-scan', { yPercent: 240, duration: 1.1, ease: 'power2.inOut' }, 0.05)
+        .to('.about__fig-ghost', { x: 0, opacity: 0.16, duration: 1.0 }, 0.25);
+    }, fig);
+    return () => ctx.revert();
+  }, []);
+
+  /* Llenado de palabras conducido por scroll */
+  useLayoutEffect(() => {
+    const words = mfRef.current.querySelectorAll('span');
+    if (reduced()) {
+      words.forEach((w) => {
+        w.style.color = w.classList.contains('mf-em') ? '#f5a623' : '#ede8dd';
+      });
+      return undefined;
+    }
+    const ctx = gsap.context(() => {
+      gsap.set(words, { color: 'rgba(138, 133, 123, 0.34)' });
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: mfRef.current,
+          start: 'top 78%',
+          end: 'bottom 42%',
+          scrub: 0.6,
+        },
+      });
+      words.forEach((w, i) => {
+        tl.to(
+          w,
+          {
+            color: w.classList.contains('mf-em') ? '#f5a623' : '#ede8dd',
+            duration: 1,
+            ease: 'none',
+          },
+          i * 0.55
+        );
+      });
+    }, mfRef);
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section id="perfil" className="section about">
@@ -22,6 +90,15 @@ export default function About() {
             <i />
           </div>
         </header>
+
+        <p className="about__mf" ref={mfRef} aria-label="No hago páginas sueltas. Construyo sistemas que capturan datos, los ordenan y los convierten en decisiones.">
+          <span className="about__mf-tag" aria-hidden="true">// Manifiesto</span>
+          {STATEMENT.map(([w, em], i) => (
+            <span key={i} aria-hidden="true" className={em ? 'mf-em' : undefined}>
+              {w}
+            </span>
+          ))}
+        </p>
 
         <div className="about__grid" data-reveal>
           <div className="about__text">
@@ -69,27 +146,57 @@ export default function About() {
             </ol>
           </div>
 
-          <div className="about__stats marks" ref={statsRef}>
+          <div className="about__side">
+            <figure className="about__fig" ref={figRef}>
+              <picture>
+                <source srcSet={retratoAvif} type="image/avif" />
+                <img
+                  src={retratoWebp}
+                  alt={`${IDENTITY.fullName} trabajando en el Hackathon Nicaragua`}
+                  width="820"
+                  height="830"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+              <img
+                src={retratoWebp}
+                alt=""
+                aria-hidden="true"
+                className="about__fig-ghost"
+                width="820"
+                height="830"
+                loading="lazy"
+                decoding="async"
+              />
+              <span className="about__fig-scan" aria-hidden="true" />
+              <figcaption className="about__fig-cap">
+                <span>REG — hN·2026</span>
+                <span>Campo de pruebas</span>
+              </figcaption>
+            </figure>
+
+            <div className="about__stats marks">
             <p className="about__stats-label">Indicadores</p>
             <dl className="about__kpis">
               {STATS.map((s) => (
                 <div key={s.label} className="about__kpi">
                   <dt>{s.label}</dt>
                   <dd>
-                    <span
-                      className="about__kpi-value"
-                      data-count={s.value}
-                      data-suffix={s.suffix}
-                    >
-                      {s.value}
-                      {s.suffix}
+                    <span className="about__kpi-value">
+                      <span className="sr-only">
+                        {s.value}
+                        {s.suffix}
+                      </span>
+                      <Odometer value={s.value} suffix={s.suffix} />
                     </span>
                     <span className="about__kpi-note">{s.note}</span>
                   </dd>
                 </div>
               ))}
             </dl>
-            <p className="about__stats-foot">Actualizado — Jun 2026</p>
+              <p className="about__stats-foot">Actualizado — Jun 2026</p>
+            </div>
           </div>
         </div>
       </div>

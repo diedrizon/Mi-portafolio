@@ -23,7 +23,7 @@ export default function Footer() {
             <ul className="footer__nav">
               {NAV.map((item) => (
                 <li key={item.id}>
-                  <a href={`#${item.id}`}>{item.label}</a>
+                  <a href={`#${item.id}`} data-cursor>{item.label}</a>
                 </li>
               ))}
             </ul>
@@ -31,7 +31,7 @@ export default function Footer() {
 
           <div className="footer__meta">
             <span className="footer__stack">React + Vite · Sin trackers</span>
-            <a href="#inicio" className="footer__top" aria-label="Volver arriba">
+            <a href="#inicio" className="footer__top" aria-label="Volver arriba" data-magnetic="0.4" data-cursor>
               <ArrowUpIcon />
             </a>
           </div>

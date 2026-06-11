@@ -1,7 +1,11 @@
 # Portafolio — Diedrizon Fargas
 
 Portafolio personal de **Diedrizon Domingo Fargas Barrera**, desarrollador de
-software y analista de datos BI (Juigalpa, Nicaragua).
+software y analista de datos BI (Juigalpa, Nicaragua). Concepto v4:
+**observatorio de datos** — una sola escena 3D que VIAJA con el scroll por
+todo el sitio (terreno → torres KPI → constelación → logotipo DF), carril
+horizontal pineado de proyectos y micro-interacciones de instrumento sobre
+la identidad "ficha técnica".
 
 **Producción:** https://portafolio-de-diedrizon.netlify.app
 
@@ -9,12 +13,15 @@ software y analista de datos BI (Juigalpa, Nicaragua).
 
 ## Stack
 
-- **React 19 + Vite 6** — SPA de una sola página, sin router.
-- **CSS plano con design tokens** — sin frameworks de UI ni CSS-in-JS.
-- **Cero dependencias de runtime extra** — solo `react` y `react-dom`.
-- Fuentes **auto-hospedadas** (woff2, subset latin): Archivo Black, Archivo
-  (variable) y Martian Mono. Sin peticiones a Google Fonts.
-- Iconos **SVG inline** (`src/components/Icons.jsx`). Sin `react-icons`.
+- **React 19 + Vite 6** — SPA de una sola página.
+- **Three.js** — escena de datos procedural por fases (shaders propios) en
+  un chunk asíncrono que se descarga mientras corre el preloader.
+- **GSAP + ScrollTrigger** — intro del hero, scrubs por scroll, manifiesto.
+- **Lenis** — scroll inercial (nativo, no transform) sincronizado con
+  ScrollTrigger a través de un único ticker.
+- CSS plano con design tokens; fuentes **auto-hospedadas** (woff2 subset
+  latin): Archivo Black, Archivo variable y Martian Mono.
+- Iconos SVG inline y arte de proyectos pregenerado (AVIF/WebP).
 
 ## Comandos
 
@@ -30,58 +37,112 @@ npm run lint     # ESLint
 
 ```
 public/
-  fonts/                woff2 auto-hospedadas (preload en index.html)
-  icons/                favicons PNG + maskable (PWA)
-  CV-Diedrizon.pdf      CV descargable
-  og.png                imagen Open Graph 1200×630
-  favicon.svg           favicon vectorial
-  manifest.webmanifest  robots.txt · sitemap.xml
+  fonts/ icons/ CV-Diedrizon.pdf og.png favicon.svg
+  manifest.webmanifest · robots.txt · sitemap.xml
 src/
-  data/profile.js       ← ÚNICA fuente de contenido (textos, proyectos, redes)
-  styles/global.css     tokens, base, utilidades y motivos de marca
-  hooks/
-    useReveal.js        reveal en cascada con un solo IntersectionObserver
-    useCountUp.js       contadores de KPIs (rAF, una sola vez)
-  components/           secciones + su CSS colocalizado
+  data/profile.js        ← ÚNICA fuente de contenido
+  lib/motion.js          GSAP + ScrollTrigger + Lenis (una fuente rAF)
+  lib/scramble.js        efecto de texto "descifrándose"
+  three/createDataScene.js  escena viajera: terreno, torres KPI,
+                            constelación y DF extruido (GLSL, vanilla three)
+  lib/split.js           títulos letra a letra (accesible)
+  lib/marquee.js         marquesinas reactivas a la velocidad del scroll
+  assets/previews/       tarjetas de instrumento por proyecto (generadas)
+  assets/retrato.*       retrato duotono de campo (generado)
+  hooks/                 useReveal · useActiveSection
+  components/            secciones + Preloader, Scene3D, Cursor, Rail,
+                         Odometer
+  styles/global.css      tokens, base, Lenis, grano
 ```
 
-## Cómo personalizar
+## Experiencia v4
 
-Casi todo el contenido vive en **`src/data/profile.js`**: identidad, contacto,
-redes, indicadores, stack y proyectos. Editá ese archivo y no hace falta tocar
-componentes.
+1. **Preloader de arranque**: porcentaje real (fuentes + escena 3D),
+   frases que se descifran, salida en cortina.
+2. **Hero cinematográfico**: 170svh con interior sticky; el nombre entra
+   por líneas, el HUD muestra hora local viva y, al hacer scroll, la
+   cámara se sumerge en el terreno mientras el titular se parte.
+3. **Viaje 3D por fases** — UNA escena persiste todo el recorrido y la
+   cámara vuela entre 5 estaciones conducida por las secciones:
+   - *Hero*: terreno desplazado por ruido simplex con rejilla milimetrada
+     antialiasada y polvo ámbar (todo el movimiento en GPU).
+   - *Perfil*: un **skyline de 16 pilares de luz** crece del terreno en
+     cascada al pasar por los indicadores (líneas con gradiente y puntas
+     que titilan — un solo draw call, altura calculada en el shader); la
+     cámara los sobrevuela.
+   - *Proyectos*: un **dial de radar** profundo (anillos concéntricos +
+     36 marcas contra-rotando) aparece tenue tras el contenido; durante
+     el carril pineado la escena entera se ATENÚA al 45% para que las
+     láminas manden, y recupera presencia hacia el cierre.
+   - *Contacto*: el logotipo **DF extruido** se ensambla girando con un
+     anillo orbital de partículas — el jefe final del scroll.
+4. **Manifiesto**: las palabras se "encienden" conducidas por el scroll.
+5. **Retrato de campo**: foto real del Hackathon Nicaragua en duotono
+   tinta/papel con rejilla de instrumento, capa fantasma ámbar y línea de
+   escaneo que lo "ensambla" al entrar en viewport — montado como carnet
+   junto a los indicadores (foto + KPIs = ficha técnica).
+6. **KPIs de rodillo**: cada dígito es una columna 0-9 que gira hasta su
+   valor (odómetro de instrumento), con el valor real en `sr-only`.
+7. **Carril horizontal pineado** (escritorio sin reduced-motion): los
+   destacados se recorren en horizontal con HUD `01 / 03` + barra de
+   progreso y parallax interno del arte por lámina
+   (`containerAnimation`). En táctil/reduced: pila vertical.
+8. **Títulos letra a letra**: máscaras por carácter en cascada, texto
+   real en `aria-label`.
+9. **Marquesinas reactivas**: stack y cinta de contacto aceleran y se
+   inclinan (skew) con la velocidad del scroll vía Lenis.
+10. **Proyectos (rejilla)**: tarjeta de instrumento que flota siguiendo
+    el puntero (escritorio) o inline (táctil).
+11. **Contacto**: cinta inversa a sangre completa y HABLEMOS gigante con
+    llenado ámbar al hover.
+12. **Cursor de instrumento + botones magnéticos** (solo puntero fino),
+    regla lateral de progreso y grano fílmico estático.
+13. **Huevos de pascua**: arte ASCII + mensaje para reclutadores en la
+    consola; la pestaña pregunta «¿Ya te vas?» al cambiar de pestaña;
+    página **404 "Señal perdida"** autónoma con scramble.
 
-- Colores y tipografía → tokens en `src/styles/global.css` (`:root`).
-- Imagen OG / favicons → reemplazar archivos en `public/`.
-- CV → reemplazar `public/CV-Diedrizon.pdf` (mismo nombre).
+## Rendimiento
 
-## Decisiones de rendimiento
-
-- **Animación solo con CSS `transform`/`opacity`** (composición en GPU). No
-  hay bucles `requestAnimationFrame` permanentes ni listeners de `mousemove`.
-- El reveal de secciones usa **un único `IntersectionObserver`** que se
-  desconecta al terminar; el contador de KPIs corre **una vez** (~1.1 s).
-- El indicador de progreso del scroll usa un solo listener pasivo con
-  *throttle* por `requestAnimationFrame`.
-- `prefers-reduced-motion` desactiva toda animación (entrada del hero,
-  reveals, ticker, contadores) mostrando el estado final.
-- Sin JavaScript la página es **100 % legible**: el ocultamiento previo a la
-  animación solo se aplica bajo `html.js` (clase añadida por un script inline
-  en `<head>`).
-- Imágenes del retrato en **AVIF/WebP/JPG** con `width`/`height` explícitos
-  (sin CLS) y `fetchpriority="high"` en el hero.
-- Fuentes críticas con `<link rel="preload">` y `font-display: swap`.
+- **three en chunk asíncrono** (141 KB gz) que se descarga en paralelo al
+  preloader; el hilo inicial carga ~127 KB gz (react 60.5 + motion 50.6 +
+  app 16.1).
+- La escena usa **DPR limitado** (1.5 móvil / 1.75 escritorio), menos
+  geometría/partículas/órbita en móvil y **se pausa** con la pestaña
+  oculta; los grupos por fase se ocultan (`visible=false`) fuera de su
+  tramo, así el render dibuja solo lo que toca.
+- Desplazamiento de vértices, dibujado de enlaces y órbita **en GPU**:
+  por frame la CPU solo interpola cámara y escalas (decenas de números).
+- Lenis + ScrollTrigger comparten **un único ticker**; sin listeners de
+  `mousemove` globales fuera del parallax del hero y el cursor (ambos
+  quickTo, solo punteros finos).
+- `prefers-reduced-motion` desactiva TODO: sin preloader, sin 3D (queda el
+  Backdrop estático idéntico en identidad), sin scrubs, sin carril
+  horizontal (pila vertical), sin odómetros ni marquesinas (valores y
+  contenido estáticos).
+- Sin WebGL la página funciona igual con el fondo estático.
+- Imágenes AVIF/WebP con dimensiones explícitas (cero CLS), fuentes con
+  preload y `font-display: swap`, caché inmutable vía `netlify.toml`.
+- **Alturas cortas** (laptops 1366×768, ventanas reducidas): dos tiers de
+  compresión vertical del hero (≤860px y ≤720px) garantizan que título,
+  CTAs, redes y ficha entren completos en el pliegue.
 
 ## Accesibilidad
 
-- Salto al contenido (`skip-link`), foco visible ámbar en todo control.
-- Navegación móvil real (botón con `aria-expanded`, cierre con `Escape`).
-- H1 con texto real (el contorno es solo CSS), `aria-label` en iconos,
-  estados del botón «Copiar» anunciados con `aria-live`.
-- Objetivos táctiles ≥ 44 px y contraste AA sobre fondo tinta.
+Skip-link con salto nativo, anclas suaves que **mueven el foco** al
+destino, foco visible ámbar, menú móvil con `aria-expanded` + Escape,
+H1/H2 con texto real (contornos y capas decorativas `aria-hidden`),
+estados del botón «Copiar» con `aria-live`, targets ≥ 44 px. Los títulos
+divididos conservan su texto en `aria-label`; los odómetros llevan el
+valor real en `sr-only`; el carril horizontal es solo presentación (el
+orden del DOM es el natural).
+
+## Personalización
+
+Contenido en `src/data/profile.js`; colores/tipos en
+`src/styles/global.css`; arte de proyectos en `src/assets/previews/`
+(regenerable); CV en `public/CV-Diedrizon.pdf`.
 
 ## Despliegue (Netlify)
 
-El repo incluye `netlify.toml` con el comando de build, el directorio
-`dist/` y cabeceras de caché/seguridad. Basta con conectar el repositorio en
-Netlify; no se necesita configuración adicional.
+`netlify.toml` incluido (build, `dist/`, caché y cabeceras de seguridad).
+Conectar el repositorio y listo.

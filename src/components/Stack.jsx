@@ -1,4 +1,8 @@
+import { useEffect, useRef } from 'react';
 import { SKILL_GROUPS, TICKER } from '../data/profile';
+import { reduced } from '../lib/motion';
+import { initMarquee } from '../lib/marquee';
+import { scramble } from '../lib/scramble';
 import './stack.css';
 
 /**
@@ -8,8 +12,37 @@ import './stack.css';
  * hacer hover y se detiene con prefers-reduced-motion.
  */
 export default function Stack() {
+  const rootRef = useRef(null);
+  const trackRef = useRef(null);
+
+  /* Marquesina reactiva a la velocidad del scroll */
+  useEffect(() => initMarquee(trackRef.current, { speed: 55, reverse: true }), []);
+
+  /* Descifrado de los títulos de dominio la primera vez que entran */
+  useEffect(() => {
+    if (reduced()) return undefined;
+    const titles = rootRef.current.querySelectorAll('.stack__domain');
+    const cancels = [];
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const el = e.target;
+          io.unobserve(el);
+          cancels.push(scramble(el, el.textContent, { duration: 760 }));
+        });
+      },
+      { threshold: 0.6 }
+    );
+    titles.forEach((t) => io.observe(t));
+    return () => {
+      io.disconnect();
+      cancels.forEach((c) => c());
+    };
+  }, []);
+
   return (
-    <section id="stack" className="section stack">
+    <section id="stack" className="section stack" ref={rootRef}>
       <div className="container">
         <header className="section-head">
           <p className="kicker">
@@ -23,7 +56,7 @@ export default function Stack() {
       </div>
 
       <div className="stack__ticker" aria-label="Tecnologías principales">
-        <div className="stack__track">
+        <div className="stack__track" ref={trackRef}>
           <ul className="stack__list">
             {TICKER.map((t) => (
               <li key={t}>

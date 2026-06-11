@@ -146,3 +146,121 @@
     gap: 8px;
   }
 }
+
+/* ---------- Cinta inversa (sangre completa) ---------- */
+
+.contact__strip {
+  overflow: hidden;
+  border-block: 1px solid var(--line);
+  padding-block: 14px;
+  margin-bottom: clamp(48px, 8vw, 88px);
+  contain: layout paint;
+}
+
+.contact__strip-track {
+  display: flex;
+  width: max-content;
+  animation: contact-marquee 38s linear infinite;
+  will-change: transform;
+}
+
+.contact__strip:hover .contact__strip-track {
+  animation-play-state: paused;
+}
+
+.contact__strip-list {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.6vw, 1.7rem);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+  white-space: nowrap;
+}
+
+.contact__strip-list li {
+  display: inline-flex;
+  align-items: center;
+}
+
+.contact__strip-sep {
+  margin-inline: 30px;
+  font-size: 0.55em;
+  color: var(--amber);
+}
+
+/* dirección inversa al ticker del stack */
+@keyframes contact-marquee {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact__strip-track {
+    animation: none;
+  }
+}
+
+/* ---------- HABLEMOS gigante ---------- */
+
+.contact__giant {
+  margin: 6px 0 10px;
+}
+
+.contact__giant a {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 13.4vw, 9.8rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.contact__giant-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--paper);
+}
+
+@supports not ((-webkit-text-stroke: 1px #fff) or (text-stroke: 1px #fff)) {
+  .contact__giant-outline {
+    color: var(--paper-soft);
+  }
+}
+
+.contact__giant-fill {
+  position: absolute;
+  inset: 0;
+  color: var(--amber);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.65s var(--ease-out);
+}
+
+.contact__giant a:hover .contact__giant-fill,
+.contact__giant a:focus-visible .contact__giant-fill {
+  clip-path: inset(0 0% 0 0);
+}
+
+.contact__sub {
+  font-family: var(--font-mono);
+  font-size: clamp(0.78rem, 1.6vw, 0.92rem);
+  letter-spacing: 0.08em;
+  color: var(--paper-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact__giant-fill {
+    transition: none;
+  }
+}
+
+.contact__strip-track.is-js {
+  animation: none;
+}

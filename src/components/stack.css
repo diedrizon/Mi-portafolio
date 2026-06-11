@@ -124,3 +124,8 @@
     padding-top: 0;
   }
 }
+
+/* Con JS, la marquesina la conduce el ticker (velocidad reactiva) */
+.stack__track.is-js {
+  animation: none;
+}
